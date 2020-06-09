@@ -17,16 +17,17 @@ public class ActivityFinder extends JavaRecursiveElementVisitor {
     public void visitMethod(PsiMethod method) {
         super.visitMethod(method);
 
-        method.getBody().accept(new JavaRecursiveElementVisitor() {
+        Objects.requireNonNull(method.getBody()).accept(new JavaRecursiveElementVisitor() {
             @Override
             public void visitMethodCallExpression(PsiMethodCallExpression expression) {
                 super.visitMethodCallExpression(expression);
 
                 try {
-                    String name = expression.getArgumentList().getExpressions()[0].getText().replaceAll("R.layout.", "");
-                    if(name.equalsIgnoreCase(layoutName))
-                        isActivity = true;
-
+                    if(!expression.getArgumentList().isEmpty()) {
+                        String name = expression.getArgumentList().getExpressions()[0].getText().replaceAll("R.layout.", "");
+                        if (name.equalsIgnoreCase(layoutName))
+                            isActivity = true;
+                    }
 
                 } catch (Exception e){
                     e.printStackTrace();
