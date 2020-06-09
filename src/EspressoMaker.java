@@ -5,10 +5,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,12 +81,16 @@ public class EspressoMaker implements Runnable {
                             File test = new File(sourceDirectory.getCanonicalPath(), "androidTest/java/EspressoMaker/" + activityName + "Test.java");
                             if(test.createNewFile()){
                                 Utils.showMessage(activityName+"Test is created");
+
+                                TestCaseGenerator testCaseGenerator = new TestCaseGenerator(test, activityName);
+                                testCaseGenerator.generate();
+
+
+
                             } else {
                                 Utils.showMessage(activityName+"Test is failed to be created");
                             }
 
-//                        FileOutputStream fileOutputStream = new FileOutputStream(test);
-//                        fileOutputStream.close();
 
                         } catch (Exception e) {
                             e.printStackTrace();
