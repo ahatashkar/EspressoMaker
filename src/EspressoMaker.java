@@ -82,7 +82,7 @@ public class EspressoMaker implements Runnable {
                             if(test.createNewFile()){
                                 Utils.showMessage(activityName+"Test is created");
 
-                                TestCaseGenerator testCaseGenerator = new TestCaseGenerator(test, activityName);
+                                TestCaseGenerator testCaseGenerator = new TestCaseGenerator(test, entity);
                                 testCaseGenerator.generate();
 
 

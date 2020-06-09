@@ -3,8 +3,8 @@ import com.intellij.psi.PsiClass;
 
 public class ActivityEntity {
 
-    VirtualFile layout;
-    PsiClass javaClass;
+    private VirtualFile layout;
+    private PsiClass javaClass;
 
     public ActivityEntity(VirtualFile layout, PsiClass javaClass) {
         this.layout = layout;
