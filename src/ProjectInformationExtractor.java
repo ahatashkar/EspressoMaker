@@ -1,5 +1,3 @@
-package Analysis;
-
 import Utils.Utils;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;

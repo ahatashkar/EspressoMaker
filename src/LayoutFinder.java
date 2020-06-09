@@ -1,5 +1,3 @@
-package Analysis;
-
 import com.intellij.openapi.vfs.VirtualFile;
 
 import java.util.ArrayList;

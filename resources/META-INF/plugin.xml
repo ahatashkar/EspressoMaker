@@ -21,14 +21,14 @@
     <toolWindow id="EspressoMaker"
                 anchor="bottom"
                 icon="/Images/espresso.png"
-                factoryClass="Plugin.EspressoToolWindowFactory">
+                factoryClass="EspressoToolWindowFactory">
 
     </toolWindow>
   </extensions>
 
   <actions>
     <!-- Add your actions here -->
-    <action id="Action" class="Plugin.Action"
+    <action id="Action" class="Action"
             text="Make Espresso"
             description="Generate Espresso automatically">
       <add-to-group group-id="AnalyzeMenu" anchor="first"/>

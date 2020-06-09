@@ -1,5 +1,4 @@
-package Analysis;
-
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.JavaRecursiveElementVisitor;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiJavaFile;
@@ -32,6 +31,8 @@ public class JavaClassFinder extends JavaRecursiveElementVisitor {
 
         }
     }
+
+
 
 
 

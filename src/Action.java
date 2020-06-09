@@ -1,6 +1,3 @@
-package Plugin;
-
-import Analysis.EspressoMaker;
 import Utils.Utils;
 import com.intellij.execution.filters.TextConsoleBuilderFactory;
 import com.intellij.execution.ui.ConsoleView;
