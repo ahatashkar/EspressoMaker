@@ -32,7 +32,7 @@
             text="Make Espresso"
             description="Generate Espresso automatically">
       <add-to-group group-id="AnalyzeMenu" anchor="first"/>
-      <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift M"/>
+      <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift E"/>
     </action>
   </actions>
 
