@@ -1,22 +1,16 @@
 <idea-plugin>
-  <id>com.your.company.unique.plugin.id</id>
-  <name>Plugin display name here</name>
+  <id>ir.ac.um.espressoMaker</id>
+  <name>Espresso Maker</name>
   <version>1.0</version>
-  <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+  <vendor email="ahatashkar@gmail.com" url="https://github.com/ahatashkar">Github</vendor>
 
   <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
+      This is a plugin for Android Studio to generate Espresso automatically
     ]]></description>
 
-  <change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
-    ]]>
-  </change-notes>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="173.0"/>
+  <idea-version since-build="141.0"/>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
@@ -24,10 +18,22 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
+    <toolWindow id="EspressoMaker"
+                anchor="bottom"
+                icon="/Images/espresso.png"
+                factoryClass="Plugin.EspressoToolWindowFactory">
+
+    </toolWindow>
   </extensions>
 
   <actions>
     <!-- Add your actions here -->
+    <action id="Action" class="Plugin.Action"
+            text="Make Espresso"
+            description="Generate Espresso automatically">
+      <add-to-group group-id="AnalyzeMenu" anchor="first"/>
+      <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift M"/>
+    </action>
   </actions>
 
 </idea-plugin>
