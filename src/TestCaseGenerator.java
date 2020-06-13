@@ -33,23 +33,26 @@ public class TestCaseGenerator {
         try {
 
             FileWriter writer = new FileWriter(file);
-            writer.write("package EspressoMaker;\n\n");
+            writer.write(JavaCodeStrings.PACKAGE_NAME);
 
-            for(String str : Templates.getImports())
-                writer.write(str + "\n");
+//            for(String str : Templates.getImports())
+//                writer.write(str + "\n");
+            writer.write(JavaCodeStrings.IMPORTS);
 
-            writer.write("\n@RunWith(AndroidJUnit4.class)\n");
-            writer.write("public class " + className + "Test {\n\n");
+            writer.write(JavaCodeStrings.TEST_RUNNER);
+            writer.write(JavaCodeStrings.CLASS_HEADER.replace("[className]", className));
 
             // test isActivityElementInView
-            writer.write("@Test\n");
-            writer.write("public void test_isActivityElementInView() {\n");
-            writer.write("ActivityScenario.launch(" + className + ".class);\n");
+//            writer.write("@Test\n");
+//            writer.write("public void test_isActivityElementInView() {\n");
+            writer.write(JavaCodeStrings.METHOD_HEADER.replace("[methodName]", "isActivityInView"));
+
+            writer.write(JavaCodeStrings.ACTIVITY_SCENARIO_LAUNCH.replace("[className]", className));
             if(idList != null){
                 for(String id : idList)
-                    writer.write("onView(withId(R.id." + id + ")).check(matches(isDisplayed()));\n");
+                    writer.write(JavaCodeStrings.ON_VIEW_CHECK.replace("[id]", id));
             }
-            writer.write("}\n");
+            writer.write(JavaCodeStrings.CLASS_END);
 
 
 
