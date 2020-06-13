@@ -9,7 +9,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StaticCallback {
+public class StaticCallback extends Callback {
 
     private ActivityEntity activityEntity;
 
@@ -17,6 +17,8 @@ public class StaticCallback {
         this.activityEntity = activityEntity;
     }
 
+
+    @Override
     public void getCallbacks(){
         File xmlFile = new File(activityEntity.getLayout().getCanonicalPath());
         List<String> viewIds = getViewIds(xmlFile);
@@ -60,39 +62,7 @@ public class StaticCallback {
         }
     }
 
-    private List<String> getViewIds(File xmlFile) {
-        if (xmlFile.exists() && xmlFile.isFile()) {
-            try {
-                final List<String> viewIds = new ArrayList<>();
-                SAXParserFactory factory = SAXParserFactory.newInstance();
-                SAXParser saxParser = factory.newSAXParser();
-                saxParser.parse(xmlFile, new DefaultHandler() {
-                    @Override
-                    public void startElement(String uri, String localName,
-                                             String qName, Attributes attributes) throws SAXException {
-                        for (int i = 0; i < attributes.getLength(); i++) {
-                            String attributeQualifiedName = attributes.getQName(i);
-                            if (attributeQualifiedName != null
-                                    && attributeQualifiedName.toLowerCase()
-                                    .equalsIgnoreCase("android:id")) {
-                                String viewId = attributes.getValue(i);
-                                //it is needed to remove prefixes android:id="@+id/btn_modulo"
-                                int index = viewId.lastIndexOf('/');
-                                if (index != -1) {
-                                    viewId = viewId.substring(index + 1).trim();
-                                }
-                                viewIds.add(viewId);
-                            }
-                        }
-                    }
-                });
-                return viewIds;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
+
 
     private String getCallbackMethodNameForView(File xmlFile, String viewId) {
         if (xmlFile.exists() && xmlFile.isFile()) {

@@ -20,7 +20,7 @@ public class ActivityEntity {
         this.javaClass = javaClass;
 
         this.staticCallback = new StaticCallback(this);
-        this.dynamicCallback = new DynamicCallback();
+        this.dynamicCallback = new DynamicCallback(this);
         this.annotatedCallback = new AnnotatedCallback();
 
         this.buttonHandlers = new ArrayList<>();
@@ -28,6 +28,7 @@ public class ActivityEntity {
 
     public void callbackDetection(){
         staticCallback.getCallbacks();
+        dynamicCallback.getCallbacks();
 
         int i = 0;
 

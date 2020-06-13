@@ -1,2 +1,90 @@
-public class DynamicCallback {
+import com.intellij.psi.*;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+public class DynamicCallback extends Callback{
+
+    private ActivityEntity activityEntity;
+
+    public DynamicCallback(ActivityEntity activityEntity){
+        this.activityEntity = activityEntity;
+    }
+
+    @Override
+    public void getCallbacks(){
+        File xmlFile = new File(activityEntity.getLayout().getCanonicalPath());
+        List<String> viewIds = getViewIds(xmlFile);
+        if(viewIds != null && !viewIds.isEmpty()){
+            List<String> viewIdList = new ArrayList<>();
+            for (String viewId : viewIds){
+
+                activityEntity.getJavaClass().accept(new JavaRecursiveElementVisitor() {
+                    @Override
+                    public void visitAssignmentExpression(PsiAssignmentExpression expression) {
+                        super.visitAssignmentExpression(expression);
+                        String expressionText = expression.getRExpression().getText();
+                        if(expressionText.contains("findViewById") && expressionText.contains(viewId)){
+                            String str = expression.getRExpression().getText().replace("findViewById(R.id.", "");
+                            str = str.replace(")", "");
+                            if(viewId.equalsIgnoreCase(str)){
+                                String idName = expression.getLExpression().getText();
+                                viewIdList.add(idName);
+
+                            }
+                        }
+                    }
+                });
+            }
+
+            if(!viewIdList.isEmpty()){
+                for(String viewId : viewIdList) {
+
+                    activityEntity.getJavaClass().accept(new JavaRecursiveElementVisitor() {
+                        @Override
+                        public void visitMethodCallExpression(PsiMethodCallExpression expression) {
+                            super.visitMethodCallExpression(expression);
+
+                            if (expression.getMethodExpression().getReferenceName().equalsIgnoreCase("setOnClickListener")) {
+                                if(viewId.equalsIgnoreCase(expression.getMethodExpression().getQualifierExpression().getText())){
+
+                                    expression.accept(new JavaRecursiveElementVisitor() {
+                                        @Override
+                                        public void visitNewExpression(PsiNewExpression expression) {
+                                            super.visitNewExpression(expression);
+
+                                            if(expression.getClassReference() != null) {
+                                                if (expression.getClassReference().getQualifiedName().equalsIgnoreCase("android.content.Intent")) {
+                                                    //TODO : is it possible to find a visitor to do this?
+                                                    String str = expression.getText().replace("new Intent(", "");
+                                                    str = str.replace(")", "");
+                                                    String[] arr = str.split(",");
+                                                    str = arr[1].replace(".class", "");
+
+                                                    ButtonHandler handler = new ButtonHandler();
+                                                    handler.setName(viewId);
+                                                    handler.setNavigatedActivity(str);
+                                                    activityEntity.buttonHandlers.add(handler);
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+
+                            }
+                        }
+                    });
+                }
+            }
+
+
+
+        }
+
+
+
+
+    }
 }
