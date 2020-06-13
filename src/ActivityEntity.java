@@ -13,7 +13,7 @@ public class ActivityEntity {
     private DynamicCallback dynamicCallback;
     private AnnotatedCallback annotatedCallback;
 
-    public List<ButtonHandler> buttonHandlers;
+    public List<ButtonNavigationInfo> buttonNavigationInfoList;
 
     public ActivityEntity(VirtualFile layout, PsiClass javaClass) {
         this.layout = layout;
@@ -23,7 +23,7 @@ public class ActivityEntity {
         this.dynamicCallback = new DynamicCallback(this);
         this.annotatedCallback = new AnnotatedCallback();
 
-        this.buttonHandlers = new ArrayList<>();
+        this.buttonNavigationInfoList = new ArrayList<>();
     }
 
     public void callbackDetection(){

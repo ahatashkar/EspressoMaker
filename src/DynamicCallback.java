@@ -3,7 +3,6 @@ import com.intellij.psi.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class DynamicCallback extends Callback{
 
@@ -55,9 +54,9 @@ public class DynamicCallback extends Callback{
                                         public void visitNewExpression(PsiNewExpression expression) {
                                             super.visitNewExpression(expression);
 
-                                            ButtonHandler handler = getButtonsInfo(expression, viewId);
+                                            ButtonNavigationInfo handler = getButtonsInfo(expression, viewId);
                                             if(handler != null)
-                                                activityEntity.buttonHandlers.add(handler);
+                                                activityEntity.buttonNavigationInfoList.add(handler);
 
                                         }
                                     });

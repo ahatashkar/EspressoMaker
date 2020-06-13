@@ -38,9 +38,9 @@ public class StaticCallback extends Callback {
                                     public void visitNewExpression(PsiNewExpression expression) {
                                         super.visitNewExpression(expression);
 
-                                        ButtonHandler handler = getButtonsInfo(expression, viewId);
+                                        ButtonNavigationInfo handler = getButtonsInfo(expression, viewId);
                                         if(handler != null)
-                                            activityEntity.buttonHandlers.add(handler);
+                                            activityEntity.buttonNavigationInfoList.add(handler);
 
                                     }
                                 });

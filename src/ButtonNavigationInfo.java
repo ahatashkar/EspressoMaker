@@ -1,4 +1,4 @@
-public class ButtonHandler {
+public class ButtonNavigationInfo {
 
     private String name;
     private String navigatedActivity;
