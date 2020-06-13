@@ -1,3 +1,4 @@
+import com.intellij.psi.PsiNewExpression;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -43,6 +44,27 @@ public abstract class Callback {
                 e.printStackTrace();
             }
         }
+        return null;
+    }
+
+    protected ButtonHandler getButtonsInfo(PsiNewExpression expression, String viewId){
+
+        if(expression.getClassReference() != null) {
+            if (expression.getClassReference().getQualifiedName().equalsIgnoreCase("android.content.Intent")) {
+                //TODO : is it possible to find a visitor to do this?
+                String str = expression.getText().replace("new Intent(", "");
+                str = str.replace(")", "");
+                String[] arr = str.split(",");
+                str = arr[1].replace(".class", "");
+
+                ButtonHandler handler = new ButtonHandler();
+                handler.setName(viewId);
+                handler.setNavigatedActivity(str);
+
+                return handler;
+            }
+        }
+
         return null;
     }
 }

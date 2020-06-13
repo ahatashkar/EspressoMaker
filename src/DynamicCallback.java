@@ -55,20 +55,10 @@ public class DynamicCallback extends Callback{
                                         public void visitNewExpression(PsiNewExpression expression) {
                                             super.visitNewExpression(expression);
 
-                                            if(expression.getClassReference() != null) {
-                                                if (expression.getClassReference().getQualifiedName().equalsIgnoreCase("android.content.Intent")) {
-                                                    //TODO : is it possible to find a visitor to do this?
-                                                    String str = expression.getText().replace("new Intent(", "");
-                                                    str = str.replace(")", "");
-                                                    String[] arr = str.split(",");
-                                                    str = arr[1].replace(".class", "");
+                                            ButtonHandler handler = getButtonsInfo(expression, viewId);
+                                            if(handler != null)
+                                                activityEntity.buttonHandlers.add(handler);
 
-                                                    ButtonHandler handler = new ButtonHandler();
-                                                    handler.setName(viewId);
-                                                    handler.setNavigatedActivity(str);
-                                                    activityEntity.buttonHandlers.add(handler);
-                                                }
-                                            }
                                         }
                                     });
                                 }
