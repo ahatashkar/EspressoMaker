@@ -2,6 +2,7 @@ import Utils.Utils;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.JavaRecursiveElementVisitor;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 
@@ -18,6 +19,7 @@ public class EspressoMaker implements Runnable {
     private List<ActivityEntity> activityEntityList;
 
     private VirtualFile sourceDirectory;
+    String projectPackageName;
 
     public EspressoMaker(Project project, PsiElement psiElement){
         this.project = project;
@@ -42,12 +44,21 @@ public class EspressoMaker implements Runnable {
 
                 List<VirtualFile> layoutFiles = projectInformationExtractor.getLayoutXMLFiles(baseDirectory);
 
+                File manifest = projectInformationExtractor.findManifestFile(new File(sourceDirectory.getCanonicalPath()));
+                if(manifest != null){
+                    Utils.showMessage("Android manifest file: " + manifest.getAbsolutePath());
+                    ManifestAnalyzer manifestAnalyzer = new ManifestAnalyzer();
+                    projectPackageName = manifestAnalyzer.getPackageName(manifest);
+                    Utils.showMessage("Application class name: " + projectPackageName);
+                }
+
                 // detecting all activities
                 for(VirtualFile layoutFile : layoutFiles){
 
                     String layoutName = layoutFile.getName();
 
                     for(PsiClass javaClass : projectJavaClasses){
+
                         if(isActivity(javaClass, layoutName)){
                             ActivityEntity activity = new ActivityEntity(layoutFile, javaClass);
                             activityEntityList.add(activity);
@@ -63,7 +74,8 @@ public class EspressoMaker implements Runnable {
                 }
 
                 // creating test class for each activity
-                File testDirectory = new File(sourceDirectory.getCanonicalPath(), "androidTest/java/EspressoMaker");
+                File testDirectory = new File(sourceDirectory.getCanonicalPath(),
+                        "androidTest" + File.separatorChar + "java" + File.separatorChar + "EspressoMaker");
                 if(!testDirectory.exists()){
                     boolean isCreated = testDirectory.mkdir();
                     if(isCreated) {
@@ -78,11 +90,12 @@ public class EspressoMaker implements Runnable {
                         String activityName = entity.getJavaClass().getName();
 
                         try {
-                            File test = new File(sourceDirectory.getCanonicalPath(), "androidTest/java/EspressoMaker/" + activityName + "Test.java");
+                            File test = new File(sourceDirectory.getCanonicalPath(),
+                                    "androidTest" + File.separatorChar + "java" + File.separatorChar + "EspressoMaker" + File.separatorChar + activityName + "Test.java");
                             if(test.createNewFile()){
                                 Utils.showMessage(activityName+"Test is created");
 
-                                TestCaseGenerator testCaseGenerator = new TestCaseGenerator(test, entity);
+                                TestCaseGenerator testCaseGenerator = new TestCaseGenerator(test, entity, projectPackageName);
                                 testCaseGenerator.generate();
 
 

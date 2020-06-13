@@ -3,6 +3,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,5 +131,14 @@ public class ProjectInformationExtractor {
             }
         }
         return result;
+    }
+
+    public File findManifestFile(File sourceDirectory) {
+        File manifestFile = new File(sourceDirectory, "main" + File.separatorChar + "AndroidManifest.xml");
+        if (manifestFile.exists() && manifestFile.isFile()) {
+            return manifestFile;
+        } else {
+            return null;
+        }
     }
 }

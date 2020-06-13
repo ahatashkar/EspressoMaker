@@ -15,7 +15,9 @@ public class JavaCodeStrings {
             "import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;\n"+
             "import static androidx.test.espresso.matcher.ViewMatchers.withId;\n"+
             "import static androidx.test.espresso.matcher.ViewMatchers.withText;\n"+
-            "import static org.junit.Assert.*;\n\n";
+            "import static org.junit.Assert.*;\n"+
+            "import [packageName].R;\n";
+
 
     public static final String TEST_RUNNER = "@RunWith(AndroidJUnit4.class)\n";
 
@@ -29,5 +31,5 @@ public class JavaCodeStrings {
 
 
 
-    public static final String CLASS_END = "\n}";
+    public static final String R_BRACKET = "\n}";
 }
