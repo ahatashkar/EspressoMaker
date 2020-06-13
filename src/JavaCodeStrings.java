@@ -12,6 +12,7 @@ public class JavaCodeStrings {
             "import static androidx.test.espresso.action.ViewActions.typeText;\n"+
             "import static androidx.test.espresso.assertion.ViewAssertions.matches;\n"+
             "import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;\n"+
+            "import static androidx.test.espresso.action.ViewActions.click;\n"+
             "import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;\n"+
             "import static androidx.test.espresso.matcher.ViewMatchers.withId;\n"+
             "import static androidx.test.espresso.matcher.ViewMatchers.withText;\n"+
