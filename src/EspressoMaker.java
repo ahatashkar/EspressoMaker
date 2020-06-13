@@ -65,12 +65,6 @@ public class EspressoMaker implements Runnable {
                         }
                     }
 
-                    if(layoutFile.getCanonicalPath() != null) {
-                        File xmlFile = new File(layoutFile.getCanonicalPath());
-                    }
-
-
-
                 }
 
                 // creating test class for each activity
@@ -86,8 +80,11 @@ public class EspressoMaker implements Runnable {
 
                 if(testDirectory.exists()){
 
+                    // Main Loop
                     for(ActivityEntity entity : activityEntityList){
                         String activityName = entity.getJavaClass().getName();
+
+                        entity.callbackDetection();
 
                         try {
                             File test = new File(sourceDirectory.getCanonicalPath(),
