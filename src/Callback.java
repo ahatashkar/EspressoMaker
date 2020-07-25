@@ -47,7 +47,7 @@ public abstract class Callback {
         return null;
     }
 
-    protected ButtonNavigationInfo getButtonsInfo(PsiNewExpression expression, String viewId){
+    protected ButtonNavigationInfo getButtonNavigationInfo(PsiNewExpression expression, String viewId){
 
         if(expression.getClassReference() != null) {
             if (expression.getClassReference().getQualifiedName().equalsIgnoreCase("android.content.Intent")) {
