@@ -54,6 +54,8 @@ public class DynamicCallback extends Callback{
                                         public void visitNewExpression(PsiNewExpression expression) {
                                             super.visitNewExpression(expression);
 
+                                            //TODO: only "new" expression in "Intent intent = new Intent(...)" is considered.
+
                                             ButtonNavigationInfo handler = getButtonNavigationInfo(expression, viewId);
                                             if(handler != null)
                                                 activityEntity.buttonNavigationInfoList.add(handler);

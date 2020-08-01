@@ -30,6 +30,7 @@ public class ActivityEntity {
         staticCallback.getCallbacks();
         dynamicCallback.getCallbacks();
 
+        //TODO: implement annotatedCallback detection
         int i = 0;
 
     }
