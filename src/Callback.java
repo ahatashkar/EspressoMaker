@@ -51,7 +51,6 @@ public abstract class Callback {
 
         if(expression.getClassReference() != null) {
             if (expression.getClassReference().getQualifiedName().equalsIgnoreCase("android.content.Intent")) {
-                //TODO : is it possible to find a visitor to do this?
                 String str = expression.getText().replace("new Intent(", "");
                 str = str.replace(")", "");
                 String[] arr = str.split(",");
@@ -67,4 +66,5 @@ public abstract class Callback {
 
         return null;
     }
+
 }

@@ -3,6 +3,7 @@ import com.intellij.psi.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DynamicCallback extends Callback{
 
@@ -51,17 +52,57 @@ public class DynamicCallback extends Callback{
 
                                     expression.accept(new JavaRecursiveElementVisitor() {
                                         @Override
-                                        public void visitNewExpression(PsiNewExpression expression) {
-                                            super.visitNewExpression(expression);
+                                        public void visitMethod(PsiMethod method) {
+                                            super.visitMethod(method);
 
-                                            //TODO: only "new" expression in "Intent intent = new Intent(...)" is considered.
+                                            if(method.getName().equalsIgnoreCase("onClick")){
 
-                                            ButtonNavigationInfo handler = getButtonNavigationInfo(expression, viewId);
-                                            if(handler != null)
-                                                activityEntity.buttonNavigationInfoList.add(handler);
 
+                                                method.getBody().accept(new JavaRecursiveElementVisitor() {
+                                                    @Override
+                                                    public void visitNewExpression(PsiNewExpression expression) {
+                                                        super.visitNewExpression(expression);
+
+                                                        ButtonNavigationInfo handler = getButtonNavigationInfo(expression, viewId);
+                                                        if(handler != null)
+                                                            activityEntity.buttonNavigationInfoList.add(handler);
+                                                    }
+                                                });
+
+                                                if(method.getBody().getText().contains("finish();")){
+
+                                                    ButtonNavigationInfo handler = new ButtonNavigationInfo();
+                                                    handler.setName(viewId);
+                                                    handler.setNavigatedActivity("finish");
+                                                    activityEntity.buttonNavigationInfoList.add(handler);
+                                                }
+
+                                            }
                                         }
                                     });
+
+
+
+
+
+
+//                                    expression.accept(new JavaRecursiveElementVisitor() {
+//                                        @Override
+//                                        public void visitNewExpression(PsiNewExpression expression) {
+//                                            super.visitNewExpression(expression);
+//
+//                                            //TODO: only "new" expression in "Intent intent = new Intent(...)" is considered.
+//
+//                                            ButtonNavigationInfo handler = getButtonNavigationInfo(expression, viewId);
+//                                            if(handler != null)
+//                                                activityEntity.buttonNavigationInfoList.add(handler);
+//
+//                                        }
+//                                    });
+
+
+
+
                                 }
 
                             }
