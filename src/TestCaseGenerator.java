@@ -18,7 +18,7 @@ public class TestCaseGenerator {
     private File file;
     private String className;
     private String packageName;
-    private List<String> idList;
+//    private List<String> idList;
 
     public TestCaseGenerator(File file, ActivityEntity entity, String packageName){
         this.entity = entity;
@@ -29,7 +29,7 @@ public class TestCaseGenerator {
 
     public void generate() {
 
-        idList = getRootLayoutId(entity.getLayout());
+//        idList = getRootLayoutId(entity.getLayout());
 
         try {
 
@@ -43,14 +43,16 @@ public class TestCaseGenerator {
             writer.write(JavaCodeStrings.CLASS_HEADER.replace("[className]", className));
 
             // test isActivityElementInView
-            writer.write(JavaCodeStrings.METHOD_HEADER.replace("[methodName]", "isActivityInView"));
+            TestStrategy activityLaunchTest = new ActivityLaunch();
+            writer.write(activityLaunchTest.testGenerator(entity));
 
-            writer.write(JavaCodeStrings.ACTIVITY_SCENARIO_LAUNCH.replace("[className]", className));
-            if(idList != null){
-                for(String id : idList)
-                    writer.write(JavaCodeStrings.ON_VIEW_CHECK.replace("[id]", id));
-            }
-            writer.write(JavaCodeStrings.R_BRACKET);
+//            writer.write(JavaCodeStrings.METHOD_HEADER.replace("[methodName]", "isActivityInView"));
+//            writer.write(JavaCodeStrings.ACTIVITY_SCENARIO_LAUNCH.replace("[className]", className));
+//            if(idList != null){
+//                for(String id : idList)
+//                    writer.write(JavaCodeStrings.ON_VIEW_CHECK.replace("[id]", id));
+//            }
+//            writer.write(JavaCodeStrings.R_BRACKET);
 
 
 
@@ -65,50 +67,7 @@ public class TestCaseGenerator {
         }
     }
 
-    List<String> getRootLayoutId(VirtualFile layout) {
-        final List<String> viewIds = new ArrayList<>();
 
-        if(layout.getCanonicalPath() != null) {
-            File xmlFile = new File(layout.getCanonicalPath());
-
-            try {
-
-                SAXParserFactory factory = SAXParserFactory.newInstance();
-                SAXParser saxParser = factory.newSAXParser();
-                saxParser.parse(xmlFile, new DefaultHandler() {
-                    @Override
-                    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-                        super.startElement(uri, localName, qName, attributes);
-
-                        for(int i = 0; i < attributes.getLength(); i++){
-                            String attributeQualifiedName = attributes.getQName(i);
-
-                            if (attributeQualifiedName != null && attributeQualifiedName.toLowerCase().equalsIgnoreCase("android:id")) {
-                                String viewId = attributes.getValue(i);
-                                //it is needed to remove prefixes android:id="@+id/btn_modulo"
-                                int index = viewId.lastIndexOf('/');
-                                if (index != -1) {
-                                    viewId = viewId.substring(index + 1).trim();
-                                }
-                                viewIds.add(viewId);
-                            }
-                        }
-                    }
-                });
-
-
-            } catch (Exception e){
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        return viewIds;
-
-
-
-
-    }
 
 
 

@@ -17,7 +17,7 @@ public class ActivityFinder extends JavaRecursiveElementVisitor {
     public void visitMethod(PsiMethod method) {
         super.visitMethod(method);
 
-        Objects.requireNonNull(method.getBody()).accept(new JavaRecursiveElementVisitor() {
+        method.getBody().accept(new JavaRecursiveElementVisitor() {
             @Override
             public void visitMethodCallExpression(PsiMethodCallExpression expression) {
                 super.visitMethodCallExpression(expression);

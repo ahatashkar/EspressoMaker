@@ -124,8 +124,13 @@ public class EspressoMaker implements Runnable {
     }
 
     boolean isActivity(PsiClass javaClass, String layoutName){
-        ActivityFinder finder = new ActivityFinder(javaClass, layoutName);
-        javaClass.accept(finder);
-        return finder.isActivity();
+        if(!javaClass.getSuperClass().getName().equalsIgnoreCase("Fragment")) {
+            ActivityFinder finder = new ActivityFinder(javaClass, layoutName);
+            javaClass.accept(finder);
+            return finder.isActivity();
+
+        } else{
+            return false;
+        }
     }
 }
