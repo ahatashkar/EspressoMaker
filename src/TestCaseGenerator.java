@@ -18,7 +18,6 @@ public class TestCaseGenerator {
     private File file;
     private String className;
     private String packageName;
-//    private List<String> idList;
 
     public TestCaseGenerator(File file, ActivityEntity entity, String packageName){
         this.entity = entity;
@@ -28,8 +27,6 @@ public class TestCaseGenerator {
     }
 
     public void generate() {
-
-//        idList = getRootLayoutId(entity.getLayout());
 
         try {
 
@@ -42,18 +39,9 @@ public class TestCaseGenerator {
             writer.write(JavaCodeStrings.TEST_RUNNER);
             writer.write(JavaCodeStrings.CLASS_HEADER.replace("[className]", className));
 
-            // test isActivityElementInView
+            // Testing Activities in Isolation
             TestStrategy activityLaunchTest = new ActivityLaunch();
             writer.write(activityLaunchTest.testGenerator(entity));
-
-//            writer.write(JavaCodeStrings.METHOD_HEADER.replace("[methodName]", "isActivityInView"));
-//            writer.write(JavaCodeStrings.ACTIVITY_SCENARIO_LAUNCH.replace("[className]", className));
-//            if(idList != null){
-//                for(String id : idList)
-//                    writer.write(JavaCodeStrings.ON_VIEW_CHECK.replace("[id]", id));
-//            }
-//            writer.write(JavaCodeStrings.R_BRACKET);
-
 
 
 

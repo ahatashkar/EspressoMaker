@@ -24,12 +24,6 @@ public class JavaCodeStrings {
 
     public static final String CLASS_HEADER = "public class [className]Test {\n\n";
     public static final String METHOD_HEADER = "@Test\n"+ "public void test_[methodName]() {\n";
-//    public static final String ACTIVITY_SCENARIO_LAUNCH = "ActivityScenario.launch([className].class);\n";
-//    public static final String ON_VIEW_CHECK = "onView(withId(R.id.[id])).check(matches(isDisplayed()));\n";
-
-
-
-
 
 
     public static final String R_BRACKET = "\n}";
