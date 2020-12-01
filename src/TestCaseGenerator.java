@@ -1,3 +1,5 @@
+import org.junit.Before;
+
 import java.io.*;
 
 public class TestCaseGenerator {
@@ -26,6 +28,8 @@ public class TestCaseGenerator {
 
             writer.write(JavaCodeStrings.TEST_RUNNER);
             writer.write(JavaCodeStrings.CLASS_HEADER.replace("[className]", className));
+
+            writer.write(JavaCodeStrings.ACTIVITY_SCENARIO_LAUNCH.replace("[className]", entity.getJavaClass().getName()));
 
             // Testing Activity in Isolation
             TestStrategy activityLaunchTest = new ActivityLaunchStrategy();

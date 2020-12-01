@@ -49,7 +49,7 @@ public class ActivityLaunchStrategy implements TestStrategy {
 
         StringBuilder testCode = new StringBuilder();
         testCode.append(JavaCodeStrings.METHOD_HEADER.replace("[methodName]", "isActivityInView"));
-        testCode.append(JavaCodeStrings.ACTIVITY_SCENARIO_LAUNCH.replace("[className]", entity.getJavaClass().getName()));
+//        testCode.append(JavaCodeStrings.ACTIVITY_SCENARIO_LAUNCH.replace("[className]", entity.getJavaClass().getName()));
 
         for(Widget widget : widgets)
             testCode.append(ON_VIEW_CHECK_VISIBILITY.replace("[id]", widget.id).replace("[visibility]", widget.visibility.toUpperCase()));

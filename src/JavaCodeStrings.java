@@ -1,9 +1,12 @@
+import org.junit.Before;
+
 public class JavaCodeStrings {
 
     public static final String PACKAGE_NAME = "package EspressoMaker;\n\n";
     public static final String IMPORTS =
             "import org.junit.Rule;\n"+
             "import org.junit.Test;\n"+
+            "import org.junit.Before;\n"+
             "import org.junit.runner.RunWith;\n"+
             "import androidx.lifecycle.Lifecycle;\n"+
             "import androidx.test.core.app.ActivityScenario;\n"+
@@ -31,7 +34,7 @@ public class JavaCodeStrings {
     public static final String CLASS_HEADER = "public class [className]Test {\n\n";
     public static final String METHOD_HEADER = "@Test\n"+ "public void test_[methodName]() {\n";
 
-    public static final String ACTIVITY_SCENARIO_LAUNCH = "ActivityScenario.launch([className].class);\n";
+    public static final String ACTIVITY_SCENARIO_LAUNCH = "@Before\npublic void initial(){\nActivityScenario.launch([className].class);\n}\n\n";
 
     public static final String R_BRACKET = "\n}\n\n";
 }

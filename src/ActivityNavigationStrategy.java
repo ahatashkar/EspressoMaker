@@ -23,7 +23,7 @@ public class ActivityNavigationStrategy implements TestStrategy {
 
         for (ButtonNavigationInfo button : entity.buttonNavigationInfoList){
             testCode.append(JavaCodeStrings.METHOD_HEADER.replace("[methodName]", "launch"+button.getNavigatedActivity().trim()+"Test"));
-            testCode.append(JavaCodeStrings.ACTIVITY_SCENARIO_LAUNCH.replace("[className]", entity.getJavaClass().getName()));
+//            testCode.append(JavaCodeStrings.ACTIVITY_SCENARIO_LAUNCH.replace("[className]", entity.getJavaClass().getName()));
 
             testCode.append(ON_VIEW_CLICK.replace("[id]", button.getName()));
 
