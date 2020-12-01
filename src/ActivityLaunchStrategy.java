@@ -32,14 +32,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivityLaunch implements TestStrategy {
+public class ActivityLaunchStrategy implements TestStrategy {
+
+    String ON_VIEW_CHECK = "onView(withId(R.id.[id])).check(matches(isDisplayed()));\n";
+    String ON_VIEW_CHECK_VISIBILITY = "onView(withId(R.id.[id])).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.[visibility])));\n";
 
     @Override
     public String testGenerator(ActivityEntity entity) {
-
-        String ACTIVITY_SCENARIO_LAUNCH = "ActivityScenario.launch([className].class);\n";
-        String ON_VIEW_CHECK = "onView(withId(R.id.[id])).check(matches(isDisplayed()));\n";
-        String ON_VIEW_CHECK_VISIBILITY = "onView(withId(R.id.[id])).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.[visibility])));\n";
 
         List<Widget> widgets = new ArrayList<>();
         try{
@@ -50,7 +49,7 @@ public class ActivityLaunch implements TestStrategy {
 
         StringBuilder testCode = new StringBuilder();
         testCode.append(JavaCodeStrings.METHOD_HEADER.replace("[methodName]", "isActivityInView"));
-        testCode.append(ACTIVITY_SCENARIO_LAUNCH.replace("[className]", entity.getJavaClass().getName()));
+        testCode.append(JavaCodeStrings.ACTIVITY_SCENARIO_LAUNCH.replace("[className]", entity.getJavaClass().getName()));
 
         for(Widget widget : widgets)
             testCode.append(ON_VIEW_CHECK_VISIBILITY.replace("[id]", widget.id).replace("[visibility]", widget.visibility.toUpperCase()));

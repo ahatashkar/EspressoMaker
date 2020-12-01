@@ -1,16 +1,4 @@
-import com.intellij.openapi.vfs.VirtualFile;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.ext.DefaultHandler2;
-import org.xml.sax.helpers.DefaultHandler;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
 public class TestCaseGenerator {
 
@@ -39,11 +27,13 @@ public class TestCaseGenerator {
             writer.write(JavaCodeStrings.TEST_RUNNER);
             writer.write(JavaCodeStrings.CLASS_HEADER.replace("[className]", className));
 
-            // Testing Activities in Isolation
-            TestStrategy activityLaunchTest = new ActivityLaunch();
+            // Testing Activity in Isolation
+            TestStrategy activityLaunchTest = new ActivityLaunchStrategy();
             writer.write(activityLaunchTest.testGenerator(entity));
 
-
+            // Testing Activity Navigation
+            TestStrategy activityNavigation = new ActivityNavigationStrategy();
+            writer.write(activityNavigation.testGenerator(entity));
 
 
 

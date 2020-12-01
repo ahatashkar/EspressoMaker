@@ -73,7 +73,7 @@ public class DynamicCallback extends Callback{
 
                                                     ButtonNavigationInfo handler = new ButtonNavigationInfo();
                                                     handler.setName(viewId);
-                                                    handler.setNavigatedActivity("finish");
+                                                    handler.setNavigatedActivity("_finish");
                                                     activityEntity.buttonNavigationInfoList.add(handler);
                                                 }
 
