@@ -9,8 +9,8 @@ public class DynamicCallback extends Callback{
 
     private ActivityEntity activityEntity;
 
-    public DynamicCallback(ActivityEntity activityEntity){
-        this.activityEntity = activityEntity;
+    public DynamicCallback(Entity activityEntity){
+        this.activityEntity = (ActivityEntity) activityEntity;
     }
 
     @Override

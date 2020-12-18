@@ -2,11 +2,10 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class ActivityEntity extends Entity{
+public class FragmentEntity extends Entity {
 
-    public ActivityEntity(VirtualFile layout, PsiClass javaClass) {
+    public FragmentEntity(VirtualFile layout, PsiClass javaClass) {
         super(layout, javaClass);
 
         staticCallback = new StaticCallback(this);
@@ -15,7 +14,4 @@ public class ActivityEntity extends Entity{
 
         buttonNavigationInfoList = new ArrayList<>();
     }
-
-
 }
-

@@ -13,8 +13,8 @@ public class StaticCallback extends Callback {
 
     private ActivityEntity activityEntity;
 
-    public StaticCallback(ActivityEntity activityEntity){
-        this.activityEntity = activityEntity;
+    public StaticCallback(Entity activityEntity){
+        this.activityEntity = (ActivityEntity) activityEntity;
     }
 
 
