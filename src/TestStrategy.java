@@ -1,4 +1,4 @@
 public interface TestStrategy {
 
-    String testGenerator(ActivityEntity entity);
+    String testGenerator(Entity entity);
 }

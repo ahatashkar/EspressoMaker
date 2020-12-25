@@ -38,7 +38,7 @@ public class ActivityLaunchStrategy implements TestStrategy {
     String ON_VIEW_CHECK_VISIBILITY = "onView(withId(R.id.[id])).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.[visibility])));\n";
 
     @Override
-    public String testGenerator(ActivityEntity entity) {
+    public String testGenerator(Entity entity) {
 
         List<Widget> widgets = new ArrayList<>();
         try{

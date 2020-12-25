@@ -4,12 +4,12 @@ import java.io.*;
 
 public class TestCaseGenerator {
 
-    private ActivityEntity entity;
+    private Entity entity;
     private File file;
     private String className;
     private String packageName;
 
-    public TestCaseGenerator(File file, ActivityEntity entity, String packageName){
+    public TestCaseGenerator(File file, Entity entity, String packageName){
         this.entity = entity;
         this.file = file;
         this.packageName = packageName;

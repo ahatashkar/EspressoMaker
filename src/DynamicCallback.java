@@ -1,35 +1,38 @@
 import com.intellij.psi.*;
+import com.intellij.psi.scope.processor.VariablesProcessor;
+import com.intellij.psi.scope.util.PsiScopesUtil;
+import com.intellij.psi.search.searches.ReferencesSearch;
+import com.intellij.psi.util.PsiTreeUtil;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class DynamicCallback extends Callback{
 
-    private ActivityEntity activityEntity;
+    private Entity entity;
 
-    public DynamicCallback(Entity activityEntity){
-        this.activityEntity = (ActivityEntity) activityEntity;
+    public DynamicCallback(Entity entity){
+        this.entity = entity;
     }
 
     @Override
     public void getCallbacks(){
-        File xmlFile = new File(activityEntity.getLayout().getCanonicalPath());
+        File xmlFile = new File(entity.getLayout().getCanonicalPath());
         List<String> viewIds = getViewIds(xmlFile);
         if(viewIds != null && !viewIds.isEmpty()){
             List<String> viewIdList = new ArrayList<>();
+
             for (String viewId : viewIds){
 
-                activityEntity.getJavaClass().accept(new JavaRecursiveElementVisitor() {
+                entity.getJavaClass().accept(new JavaRecursiveElementVisitor() {
                     @Override
                     public void visitAssignmentExpression(PsiAssignmentExpression expression) {
                         super.visitAssignmentExpression(expression);
                         String expressionText = expression.getRExpression().getText();
-                        if(expressionText.contains("findViewById") && expressionText.contains(viewId)){
+                        if (expressionText.contains("findViewById") && expressionText.contains(viewId)) {
                             String str = expression.getRExpression().getText().replace("findViewById(R.id.", "");
                             str = str.replace(")", "");
-                            if(viewId.equalsIgnoreCase(str)){
+                            if (viewId.equalsIgnoreCase(str)) {
                                 String idName = expression.getLExpression().getText();
                                 viewIdList.add(idName);
 
@@ -37,12 +40,39 @@ public class DynamicCallback extends Callback{
                         }
                     }
                 });
+
+                entity.getJavaClass().accept(new JavaRecursiveElementVisitor() {
+                    @Override
+                    public void visitVariable(PsiVariable variable) {
+                        super.visitVariable(variable);
+
+                        try {
+                            String expressionText = variable.getInitializer().getText();
+                            if (expressionText.contains("findViewById") && expressionText.contains(viewId)){
+                                variable.getInitializer().accept(new JavaRecursiveElementVisitor() {
+                                    @Override
+                                    public void visitMethodCallExpression(PsiMethodCallExpression expression) {
+                                        super.visitMethodCallExpression(expression);
+                                        List<PsiExpression> list = Arrays.asList(expression.getArgumentList().getExpressions());
+                                        String str = list.get(0).getText().replace("R.id.","");
+                                        if (viewId.equalsIgnoreCase(str)){
+                                            viewIdList.add(variable.getName());
+                                        }
+                                    }
+                                });
+                            }
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
             }
 
             if(!viewIdList.isEmpty()){
                 for(String viewId : viewIdList) {
 
-                    activityEntity.getJavaClass().accept(new JavaRecursiveElementVisitor() {
+                    entity.getJavaClass().accept(new JavaRecursiveElementVisitor() {
                         @Override
                         public void visitMethodCallExpression(PsiMethodCallExpression expression) {
                             super.visitMethodCallExpression(expression);
@@ -65,7 +95,7 @@ public class DynamicCallback extends Callback{
 
                                                         ButtonNavigationInfo handler = getButtonNavigationInfo(expression, viewId);
                                                         if(handler != null)
-                                                            activityEntity.buttonNavigationInfoList.add(handler);
+                                                            entity.buttonNavigationInfoList.add(handler);
                                                     }
                                                 });
 
@@ -74,7 +104,7 @@ public class DynamicCallback extends Callback{
                                                     ButtonNavigationInfo handler = new ButtonNavigationInfo();
                                                     handler.setName(viewId);
                                                     handler.setNavigatedActivity("_finish");
-                                                    activityEntity.buttonNavigationInfoList.add(handler);
+                                                    entity.buttonNavigationInfoList.add(handler);
                                                 }
 
                                             }

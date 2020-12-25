@@ -16,7 +16,10 @@ public class EspressoMaker implements Runnable {
     private PsiElement psiElement;
     private List<PsiClass> projectJavaClasses;
     private List<VirtualFile> projectJavaFiles;
-    private List<ActivityEntity> activityEntityList;
+
+    private List<Entity> entityList;
+//    private List<ActivityEntity> activityEntityList;
+//    private List<FragmentEntity> fragmentEntityList;
 
     private VirtualFile sourceDirectory;
     String projectPackageName;
@@ -24,7 +27,10 @@ public class EspressoMaker implements Runnable {
     public EspressoMaker(Project project, PsiElement psiElement){
         this.project = project;
         this.psiElement = psiElement;
-        activityEntityList = new ArrayList<>();
+
+        entityList = new ArrayList<>();
+//        activityEntityList = new ArrayList<>();
+//        fragmentEntityList = new ArrayList<>();
     }
 
     @Override
@@ -59,9 +65,14 @@ public class EspressoMaker implements Runnable {
 
                     for(PsiClass javaClass : projectJavaClasses){
 
-                        if(isActivity(javaClass, layoutName)){
+                        if(isFragment(javaClass, layoutName)){
+                            FragmentEntity fragment = new FragmentEntity(layoutFile, javaClass);
+                            entityList.add(fragment);
+                        }
+
+                        else if(isActivity(javaClass, layoutName)){
                             ActivityEntity activity = new ActivityEntity(layoutFile, javaClass);
-                            activityEntityList.add(activity);
+                            entityList.add(activity);
                         }
                     }
 
@@ -81,7 +92,7 @@ public class EspressoMaker implements Runnable {
                 if(testDirectory.exists()){
 
                     // Main Loop
-                    for(ActivityEntity entity : activityEntityList){
+                    for(Entity entity : entityList){
                         String activityName = entity.getJavaClass().getName();
 
                         entity.callbackDetection();
@@ -130,6 +141,17 @@ public class EspressoMaker implements Runnable {
             return finder.isActivity();
 
         } else{
+            return false;
+        }
+    }
+
+    boolean isFragment(PsiClass javaClass, String layoutName){
+        if (javaClass.getSuperClass().getName().equalsIgnoreCase("Fragment")) {
+            FragmentFinder finder = new FragmentFinder(javaClass, layoutName);
+            javaClass.accept(finder);
+            return finder.isFragment();
+
+        } else {
             return false;
         }
     }

@@ -11,7 +11,7 @@ public class ActivityNavigationStrategy implements TestStrategy {
 
 
     @Override
-    public String testGenerator(ActivityEntity entity) {
+    public String testGenerator(Entity entity) {
 
         StringBuilder testCode = new StringBuilder();
 

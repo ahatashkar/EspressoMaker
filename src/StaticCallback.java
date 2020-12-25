@@ -11,23 +11,23 @@ import java.util.List;
 
 public class StaticCallback extends Callback {
 
-    private ActivityEntity activityEntity;
+    private Entity entity;
 
-    public StaticCallback(Entity activityEntity){
-        this.activityEntity = (ActivityEntity) activityEntity;
+    public StaticCallback(Entity entity){
+        this.entity =  entity;
     }
 
 
     @Override
     public void getCallbacks(){
-        File xmlFile = new File(activityEntity.getLayout().getCanonicalPath());
+        File xmlFile = new File(entity.getLayout().getCanonicalPath());
         List<String> viewIds = getViewIds(xmlFile);
         if(viewIds != null && !viewIds.isEmpty()){
             for (String viewId : viewIds){
                 String callbackMethodName = getCallbackMethodNameForView(xmlFile, viewId);
                 if(callbackMethodName != null){
 
-                    activityEntity.getJavaClass().accept(new JavaRecursiveElementVisitor() {
+                    entity.getJavaClass().accept(new JavaRecursiveElementVisitor() {
                         @Override
                         public void visitMethod(PsiMethod method) {
                             super.visitMethod(method);
@@ -40,7 +40,7 @@ public class StaticCallback extends Callback {
 
                                         ButtonNavigationInfo handler = getButtonNavigationInfo(expression, viewId);
                                         if(handler != null)
-                                            activityEntity.buttonNavigationInfoList.add(handler);
+                                            entity.buttonNavigationInfoList.add(handler);
 
                                     }
                                 });
